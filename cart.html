@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/cart.css">
+    <script src="js/jquery.js"></script>
+</head>
+
+<body>
+    <div class="cart">
+        <div class="top">
+            <h2>书籍商城</h2>
+            <ul>
+                <li><a href="bookList.html">返回书城</a></li>
+            </ul>
+        </div>
+
+        <div class="nav">
+            <h2>我的购物车</h2>
+            <span></span>
+        </div>
+        <div class="book">
+
+            <div class="cbook">
+            </div>
+            <div class="bottom">
+                <input type="checkbox" class="all"><label>全选</label>
+                <div class="money">
+                    <span>合计：</span>
+                    <span id="count"></span>
+                    <span id="sub">结算</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="foot"></div>
+
+    <script>
+        let user = JSON.parse(sessionStorage.getItem('user'));
+        let uid = user.uid;
+        console.log(uid);
+        let url = 'http://localhost:3000/cart';
+        fetch(`${url}?uid=${uid}`).then(data => data.json()).then(res => {
+            console.log(res);
+            for (let i in res) {
+                let cbook = res[i];
+                let ul = $('<ul></ul>');
+                $('.cbook').append(ul);
+                ul.append('<input type="checkbox">');
+                let title = $('<li></li>').text(cbook.title);
+                let img = $('<img>').prop('src', `${cbook.img}`);
+                let count = $('<li></li>')
+                count.append('<span>-</span>');
+                let con = $('<b></b>').text(cbook.count);
+                count.append(con);
+                count.append('<span>+</span>');
+                let cMoney = $('<li></li>').text('￥'+cbook.price * cbook.count);
+                ul.append(img, cMoney, count, title);
+
+                $('#count').text('￥'+ '待计算').css('color','red');
+
+            }
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>修改密码</title>
+    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/changePwd.css">
+    <script src="js/jquery.js"></script>
+
+</head>
+
+<body>
+    <div class="change">
+        <div class="top">
+            <h2>书籍商城</h2>
+            <ul>
+                <li><a href='bookList.html'>返回书城</a></li>
+            </ul>
+        </div>
+        <div class="nav">
+            <h2>修改密码</h2>
+            <span></span>
+        </div>
+        <div class="cPwd">
+            <ul>
+                <li>
+                    <label for="username">用&nbsp;户&nbsp;名：</label>
+                    <input type="text" placeholder="由3-15位大小写字母、数字组成 (数字不开头)" id="username"
+                        onKeypress='javascript:if(event.keyCode == 32)event.returnValue = false;'><br>
+                    <span class="error"></span>
+                </li>
+                <li>
+                    <label for="tel">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</label>
+                    <input type="text" placeholder="请输入电话" id="tel"
+                        onKeypress='javascript:if(event.keyCode == 32)event.returnValue = false;'><br>
+                    <span class="error"></span>
+                </li>
+                <li>
+                    <label for="pwd">新&nbsp;密&nbsp;码：</label>
+                    <input type="password" placeholder="请输入新密码" id="pwd"
+                        onKeypress='javascript:if(event.keyCode == 32)event.returnValue = false;'><br>
+                    <span class="error"></span>
+                </li>
+                <li>
+                    <label for="cPwd">确认密码：</label>
+                    <input type="password" placeholder="请重复输入确认密码" id="cPwd"
+                        onKeypress='javascript:if(event.keyCode == 32)event.returnValue = false;'><br>
+                    <span class="error"></span>
+                </li>
+                <input type="button" value="提交" id="sub">
+                <span class="login"><a href="login.html">去登陆>></a></span>
+            </ul>
+        </div>
+    </div>
+    <div class="foot"></div>
+    <script>
+        let fName = false;
+        let fTel = false;
+        let fPwd = false;
+        let fCpwd = false;
+        $('#username').blur(() => {
+            let username = $('#username').val().trim()
+            checkName(username);
+        })
+        $('#tel').blur(() => {
+            let tel = $('#tel').val().trim()
+            checkTel(tel);
+        })
+        $('#pwd').blur(() => {
+            let pwd = $('#pwd').val().trim()
+            checkPwd(pwd);
+        })
+        $('#cPwd').blur(() => {
+            let pwd = $('#pwd').val().trim()
+            let cPwd = $('#cPwd').val().trim()
+            if(cPwd == ''){
+                $('.error').eq(3).text('重复密码不能为空！').css('display', 'block');
+            }else if(pwd !== cPwd){
+                $('.error').eq(3).text('两次密码不一致！').css('display', 'block');
+            }else{
+                $('.error').eq(3).css('display', 'none');
+                fCpwd = true;
+            }
+        })
+
+
+
+        $('#sub').click(() => {
+            if (fName && fTel && fPwd && fCpwd) {
+                let username = $('#username').val().trim();
+                let tel = $('#tel').val().trim();
+                let pwd = $('#pwd').val().trim();
+                let cPwd = $('#cPwd').val().trim();
+                let user = {
+                    'name': username,
+                    'pwd': pwd,
+                    'tel': tel
+                }
+                user = JSON.stringify(user);
+                let url = 'http://localhost:3000/users/changePwd';
+                fetch(url,{
+                    method:'POST',
+                    body:user,
+                    headers:{ 'Content-Type':"application/x-www-form-urlencoded"}
+                }).then(data=>data.json()).then(res=>{
+                    $('#sub').val(`${res.msg}`).css('font-size','12px');
+                    if($('#sub').val()=='修改成功'){
+                        $('.login').css('display','block');
+                        $('#sub').off();
+                    }
+                })
+            } else {
+                alert('请正确完善信息！')
+            }
+            console.log('--------------');
+        })
+
+
+
+
+
+        function checkName(e) {
+            if (e == '') {
+                $('.error:first').text('用户名不能为空').css('display', 'block');
+            } else if (!isUser(e)) {
+                $('.error:first').text('由3-15位大小写字母、数字组成 (数字不开头)').css('display', 'block');
+            } else {
+                $('.error:first').css('display', 'none')
+                fName = true;
+            }
+        }
+        function checkTel(e) {
+            if (e == '') {
+                $('.error').eq(1).text('手机号不能为空').css('display', 'block');
+            } else if (!isTel(e)) {
+                $('.error').eq(1).text('手机号格式错误，请重新输入！').css('display', 'block');
+            } else {
+                $('.error').eq(1).css('display', 'none')
+                fTel = true;
+            }
+        }
+        function checkPwd(e) {
+            if (e == '') {
+                $('.error').eq(2).text('密码不能为空').css('display', 'block');
+            } else if (e.length < 6) {
+                $('.error').eq(2).text('密码不能少于6位！').css('display', 'block');
+            } else {
+                $('.error').eq(2).css('display', 'none')
+                fPwd = true;
+            }
+        }
+
+        function isTel(tel) {
+            var re = /^1[3456789]\d{9}$/;
+            return re.test(tel);
+        }
+        function isUser(username) {
+            let re = /^[a-zA-Z]{1}[a-zA-Z0-9]{2,15}$/;
+            return re.test(username);
+        }
+
+    </script>
+</body>
+
+</html>

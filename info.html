@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/info.css">
+    <script src="js/jquery.js"></script>
+</head>
+
+<body>
+    <div class="info">
+        <div class="top">
+            <h2>书籍商城</h2>
+            <ul>
+                <li><a href='bookList.html'>返回书城</a></li>
+            </ul>
+        </div>
+        <div class="nav">
+            <h2>设置个人信息</h2>
+            <span></span>
+        </div>
+
+
+        <div class="msg">
+            <div class="img">
+
+            </div>
+            <ul>
+                <li>
+                    <label for="">我的用户名：</label>
+                    <span id="username"></span>
+                </li>
+                <li>
+                    <label for="">我的&nbsp;性&nbsp;别：</label>
+                    <span id="sex"></span>
+                </li>
+                <li>
+                    <label for="">我的手机号：</label>
+                    <span id="tel"></span>
+                </li>
+                <li>
+                    <label for="">我的&nbsp;密&nbsp;码：</label>
+                    <input type="password" id="pwd" disabled='disabled'>
+                    <button id="updata"> <a href="changePwd.html">修改密码</a></button>
+                </li>
+            </ul>
+            <button id="change">修改个人信息</button>
+        </div>
+    </div>
+
+    <div class="cmsg">
+        <span class="close"><a href="info.html" style="color:black;">x</a></span>
+        <ul>
+            <li>
+                <label for="cusername">用户名：</label>
+                <input type="text" class="cusername" disabled="disabled"><br>
+            </li>
+            <li>
+                <label for="csex">性&nbsp;&nbsp;&nbsp;别：</label>
+                <input type="text" class="csex"><br>
+                <span class="error"></span>
+            </li>
+            <li>
+                <label for="ctel">手机号：</label>
+                <input type="text" class="ctel"><br>
+                <span class="error"></span>
+            </li>
+            <li>
+                <label for="cpwd">密&nbsp;&nbsp;&nbsp;码：</label>
+                <input type="password" class="cpwd" disabled="disabled"><br>
+            </li>
+            <input type="button" value="提交" class="sure">
+        </ul>
+    </div>
+
+    <div class="foot"></div>
+    </div>
+
+    <script>
+        let user = JSON.parse(sessionStorage.getItem('user'));
+        $('#username').text(user.name);
+        $('#sex').text(user.sex);
+        $('#tel').text(user.tel);
+        $('#pwd').val(user.pwd);
+        $('.cusername').val(user.name);
+        $('.csex').val(user.sex);
+        $('.ctel').val(user.tel);
+        $('.cpwd').val(user.pwd);
+      
+
+
+        $('#change').click(() => {
+            // $('.cmsg').fadeIn();
+            $('.cmsg').css('display', 'block');
+        });
+        $('.close').click(() => {
+            $('.cmsg').css('display', 'none');
+            // $('.cmsg').fadeOut();
+        });
+
+        // let flag = false;
+        // $('.error:last').blur(()=>{
+        //     console.log('------------')
+        //     let ctel = $( $('.ctel').val());
+        //     console.log(ctel)
+        //     if(!isTel(ctel)){
+        //         $('.error:last').text('请输入正确的手机号');
+        //     }else{
+        //         flag = true;
+        //     }
+        // });
+        $('.sure').click(() => {
+            // if (flag){
+                let username = user.name;
+                let pwd = user.pwd;
+                let sex = $('.csex').val().trim();
+                let tel = $('.ctel').val().trim();
+                console.log(username, pwd, sex, tel);
+                let rUser = {
+                    'name': username,
+                    'pwd': pwd,
+                    'sex': sex,
+                    'tel': tel
+                }
+                let User = JSON.stringify(rUser);
+                let url = 'http://localhost:3000/users/info';
+                fetch(url, {
+                    method: 'POST',
+                    body: User,
+                    headers: { 'Content-Type': "application/x-www-form-urlencoded" }
+                }).then(data => data.text()).then(res => {
+                    let msgs = JSON.parse(res);
+                    console.log(msgs);
+                    if (msgs.obj.code == '201') {
+                        $('.sure').val('已提交');
+                        let User = JSON.stringify(msgs.nuser);
+                        sessionStorage.setItem('user', User);
+                    }
+                });
+            // }
+        });
+        function isTel(e) {
+            var re = /^1[3456789]\d{9}$/;
+            return e.match(re);
+        }
+
+    </script>
+</body>
+
+</html>

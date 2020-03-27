@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>书籍详情</title>
+    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/bookDetail.css">
+    <script src="js/jquery.js"></script>
+</head>
+
+<body>
+    <div class="details">
+        <div class="top">
+            <h2>书籍商城</h2>
+            <ul>
+                <li class="cart"><a href="bookList.html">返回书城</a>
+                <li class="cart"><a href="cart.html">查看购物车</a>
+                </li>
+            </ul>
+        </div>
+        <div class="book">
+            <h2>详情</h2>
+            <div class="left">
+                <img src="" alt="">
+            </div>
+            <div class="msg">
+                <ul>
+                    <li class="title"></li>
+                    <li class="catelogs"></li>
+                    <li class="tags"></li>
+                    <li class="sub1"></li>
+                    <li class="reading"></li>
+                    <li class="price"></li>
+                    <button class="add">加入购物车</button>
+                </ul>
+            </div>
+
+            <h3>详细简介：</h3>
+            <div class="sub2">
+
+            </div>
+        </div>
+        <div class="foot"></div>
+    </div>
+
+    <script>
+        var url = location.search;
+        var id = url.substring(1);
+        console.log(id);
+
+        fetch(`http://localhost:3000/catelogs/detail?bid=${id}`).then(data => data.json()).then(res => {
+            console.log(res);
+            for (let i in res) {
+                let book = res[i];
+                $('img').prop('src', `${book.img}`).mouseenter(function () {
+                    $('img').stop().animate({
+                        'width': '86%',
+                        'height': '110%'
+                    }, 500)
+                }).mouseleave(function () {
+                    $('img').stop().animate({
+                        'width': '68%',
+                        'height': '90%'
+                    }, 500)
+                })
+
+                $('.title').text(`书名：《${book.title}》`);
+                $('.catelogs').text(`类型：${book.catalog}`);
+                $('.tags').text(`所获评价：${book.tags}`);
+                $('.sub1').text(`作者：${book.sub1}`);
+                $('.reading').text(`阅读量：${book.reading}`);
+                $('.price').text(`￥${book.price} `);
+                $('.sub2').text(`${book.sub2}`);
+                
+                $('.add').click(()=>{
+                   let user = sessionStorage.getItem('user');
+                   if(user == null){
+                       alert('请登陆后进行操作！');
+                   }else{
+                       alert('成功');
+                       user = JSON.parse(user);
+                       console.log();
+                       let url = `http://localhost:3000/addcart?bid=${book.bid}&uid=${user.uid}`
+                       fetch(url).then(data=>data.json()).then(res=>{
+                           console.log(res);
+                       });
+                   }
+               });
+            }
+        });
+
+
+
+    </script>
+
+</body>
+
+</html>

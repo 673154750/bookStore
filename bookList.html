@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>书籍商城</title>
+    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/bookList.css">
+    <script src="js/jquery.js"></script>
+ 
+</head>
+
+<body>
+    <div class="top">
+        <i></i>
+        <h2>书籍商城</h2>
+        <ul class="dr">
+            <li><a href='login.html'>登录</a></li>
+            <li><a href='register.html'>注册</a></li>
+        </ul>
+        <div class='info'>
+            <span style="cursor:pointer;">个人中心</span>
+            <ul class="menu">
+                <li class='username' style="color: red;">username</li>
+                <li class='information'><a href="info.html">个人信息</a></li>
+                <li class="cart"><a href="cart.html">购物车</a></li>
+                <li class="quit"><a href="bookList.html">退出</a></li>
+            </ul>
+        </div>
+      
+    </div>
+    <ul class="catalogs">
+        <li style="background:#efdeb0;">分类</li>
+    </ul>
+    <div class="books"></div>
+    <div class="foot"></div>
+    <script>
+        $('span').click(()=>{
+            $('.menu').fadeToggle();
+        });
+        
+        var user = JSON.parse(sessionStorage.getItem('user'));
+        if(user == null){
+            $('.dr').css('display','block');
+        }else{
+            $('.info').css('display','block');
+            $('.username').text(user.name);
+        }
+
+        $('.quit').click(()=>{
+            sessionStorage.removeItem('user');  
+            window.location.href='bookList.html';
+        })
+        
+
+        let ss = 0;
+        let btn = document.querySelector('button');
+        let books = document.querySelector('.books')
+        let url = 'http://localhost:3000/catelogs';
+        let urlD = 'http://localhost:3000/catelogs/detail'
+        fetch(url).then(data => data.json()).then(res => {
+            for (let i in res) {
+                createLi(res[i]);
+            }
+        });
+
+        fetch(`${urlD}?id=242`).then(data => data.json()).then(res => {
+            for (let i in res) {
+                createBook(res[i]);
+            }
+        });
+        
+        function createLi(catelog) {
+            let id = catelog.id;
+            let catalog = catelog.catalog;
+            let ul = document.querySelector('.catalogs');
+            let li = document.createElement('li');
+            li.innerHTML = catalog;
+            li.id = id;
+            ul.append(li);
+            li.onclick = function () {
+                fetch(`${urlD}?id=${this.id}`).then(data => data.json()).then(res => {
+                    books.innerHTML = '';
+                    for(let i in res){
+                        createBook(res[i]);
+                    };
+                });
+            }
+        }
+        function showDate(msg) {
+            let li = document.createElement('li');
+            li.innerHTML = `${msg}`;
+            return li;
+        }
+        function createBook(book) {
+            let oImg = document.createElement('img');
+            oImg.src = book.img;
+            let ul = document.createElement('ul');
+            ul.id = book.bid;
+            let div = document.querySelector('.books');
+            div.append(ul);
+            ul.append(oImg);
+            ul.append(showDate(book.title));
+            ul.append(showDate(book.catalog));
+            ul.append(showDate(book.sub1));
+            ul.onclick = function(){
+                console.log(book);
+                window.location.href=`bookDetail.html?${book.bid}`;
+            }
+        }
+    </script>
+</body>
+
+</html>

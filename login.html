@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录界面</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/login.css">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_1158071_084kflqjls8x.css">
+    <script src="js/login.js"></script>
+</head>
+
+<body>
+    <div id="layout">
+        <div id="login">
+            <div class="top">
+                <a href="bookList.html" class="close"><i class="iconfont icon-guanbi"></i></a>
+                <h2>黄金屋书城</h2>
+            </div>
+            <div class="center">
+                <h2>请使用用户名登录</h2>
+            </div>
+            <div class="form_input">
+                <form action="" method="">
+                    <input type="text" name="username" id="name_input" placeholder="请输入用户名">
+                    <div class="user_error">输入错误</div>
+                    <input type="password" name="pwd" id="pass_input" placeholder="请输入密码">
+                    <div class="pwd_error">输入错误</div>
+                    <div class="more_input clearfix">
+                        <!-- <input type="checkbox" name=""> -->
+                        <!-- <label>记住用户名</label> -->
+                        <a href="changePwd.html">忘记密码</a>
+                    </div>
+                    <input type="button" value="登录" class="input_submit">
+                    <div id="error"></div>
+                </form>
+            </div>
+            <div class="under">
+                <p>还没有黄金屋账号？<a href="register.html">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;点击注册 ></a></p>
+            </div>
+        </div>
+    </div>
+    <div class="mask"></div>
+    <div class="bg"></div>
+</body>
+
+</html>

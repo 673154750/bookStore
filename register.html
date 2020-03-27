@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册界面</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="style/base.css">
+    <link rel="stylesheet" href="style/register.css">
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_1158071_084kflqjls8x.css">
+    <script src="js/register.js"></script>
+</head>
+
+<body>
+
+    <div id="layout">
+        <div id="regist">
+            <div class="top">
+                <a href="bookList.html" class="close"><i class="iconfont icon-guanbi"></i></a>
+                <h2>黄金屋书城</h2>
+            </div>
+            <div class="center">
+                <h2>用户注册</h2>
+            </div>
+            <div class="reg_form clearfix">
+                <form action="login.html" method="post">
+                    <ul>
+                        <li>
+                            <label>用户名:</label>
+                            <input type="text" name="user_name" id="user_name" placeholder="由3-15位大小写字母、数字组成 (数字不开头)">
+                            <span class="error_tip">提示信息</span>
+                        </li>
+                        <li>
+                            <label>密码:</label>
+                            <input type="password" name="pwd" id="pwd" placeholder="请输入至少6位数的密码">
+                            <span class="error_tip">提示信息</span>
+                        </li>
+                        <li>
+                            <label>确认密码:</label>
+                            <input type="password" name="cpwd" id="cpwd" placeholder="请确认密码">
+                            <span class="error_tip">提示信息</span>
+                        </li>
+
+                        <li class = 'sex'>
+                            <label for="sex">性别：</label>
+                            <b class="nan">男</b>
+                            <input type="radio" name="sex" value="男" checked style="width:16px;height: 16px;margin-right: 40px;">
+                            <b class="nv">女</b>
+                            <input type="radio" name="sex" value="女" style="width:16px;height: 16px;">
+                        </li>
+                        <li>
+                            <label>&nbsp;电话:</label>
+                            <input type="text" name="tel" id="tel" placeholder="请输入手机号">
+                            <span class="error_tip">提示信息</span>
+                        </li>
+                        <li class="agreement">
+                            <input type="checkbox" name="allow" id="allow" checked="checked">
+                            <label class="label">同意”文明使用黄金屋协议“</label>
+                        </li>
+                        <li class="reg_sub">
+                            <span id="tip-error" style="color:red;"></span>
+                            <input type="button" value="注 册" name="">
+                            <a href="login.html"  class="login" style="display: none;">去登陆</a>
+                        </li>
+                    </ul>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+    <div class="mask"></div>
+    <div class="bg"></div>
+
+</body>
+
+</html>
